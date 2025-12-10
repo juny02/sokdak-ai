@@ -1,0 +1,11 @@
+name: Sokdak-AI-API
+
+services:
+  api:
+    build: .
+    container_name: sokdak-api
+    ports:
+      - "8001:8001"
+    command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app
