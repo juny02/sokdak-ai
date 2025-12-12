@@ -6,5 +6,30 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.124.2",
+    "pydantic>=2.12.5",
+    "python-ulid[pydantic]>=3.1.0",
     "uvicorn>=0.38.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.0",
+    "ruff>=0.14.8",
+]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.format]
+# Black과 유사한 포맷팅 스타일
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = []
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
