@@ -31,5 +31,37 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
                 last_chat_at=None,
                 created_at=datetime.now(timezone.utc),
                 updated_at=datetime.now(timezone.utc),
+            ),
+            Character(
+                id=ULID(),
+                user_id=user_id or ULID(),
+                name="Fake Character2",
+                persona=Persona(
+                    gender=Gender.MALE,
+                    tone=Tone.CHEERFUL,
+                    style=Style.ADVISOR,
+                    purpose=Purpose.COUNSELING,
+                ),
+                type=type or CharacterType.EPHEMERAL,
+                last_chat_at=None,
+                created_at=datetime.now(timezone.utc),
+                updated_at=datetime.now(timezone.utc),
             )
         ]
+
+    async def get_by_id(self, id: ULID) -> Character | None:
+        return Character(
+            id=id,
+            user_id=ULID(),
+            name="Fake Character by ID",
+            persona=Persona(
+                gender=Gender.FEMALE,
+                tone=Tone.CALM,
+                style=Style.LISTENER,
+                purpose=Purpose.CONFESSION,
+            ),
+            type=CharacterType.PERSISTENT,
+            last_chat_at=None,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc),
+        )

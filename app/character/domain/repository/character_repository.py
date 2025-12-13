@@ -16,3 +16,7 @@ class CharacterRepository(ABC):
         type: CharacterType | None = None,
     ) -> list[Character]:
         raise NotImplementedError
+
+    @abstractmethod
+    async def get_by_id(self, id: ULID) -> Character | None:
+        raise NotImplementedError

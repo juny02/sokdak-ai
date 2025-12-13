@@ -2,17 +2,20 @@ from fastapi import APIRouter, Depends
 from ulid import ULID
 
 from app.character.adapter.inbound.api.schema.response import (
+    GetCharacterResponse,
     GetCharactersResponse,
     GetPersonasResponse,
 )
 from app.character.application.command import GetCharactersCommand, OrderBy
 from app.character.application.usecase import (
     GetCharactersUseCase,
+    GetCharacterUseCase,
     GetPersonasUseCase,
 )
 from app.character.domain.enum import CharacterType
 
 from .dependencies import (
+    get_get_character_usecase,
     get_get_characters_usecase,
     get_get_personas_usecase,
 )
@@ -34,7 +37,7 @@ async def get_get_personas(
 async def get_characters(
     *,
     user_id: ULID | None = None,
-    type: CharacterType | None = None,  # 도메인의 ENUM을 가져다 써도 되는가?
+    type: CharacterType | None = None,
     order_by: OrderBy = OrderBy.CURR,
     usecase: GetCharactersUseCase = Depends(get_get_characters_usecase)
 ):
@@ -45,3 +48,14 @@ async def get_characters(
     )
     characters = await usecase(cmd)
     return GetCharactersResponse.from_domain(characters)
+
+
+# GET /characters/{character_id} - 특정 id의 캐릭터를 받습니다.
+@router.get("/{character_id}", response_model=GetCharacterResponse)
+async def get_character_by_id(
+    *,
+    character_id: ULID,
+    usecase: GetCharacterUseCase = Depends(get_get_character_usecase)
+):
+    character = await usecase(character_id=character_id)
+    return GetCharacterResponse.from_domain(character)
