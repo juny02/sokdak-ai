@@ -14,7 +14,7 @@ from app.character.domain.enum import CharacterType
 
 from .dependencies import (
     get_get_characters_usecase,
-    get_personas_usecase,
+    get_get_personas_usecase,
 )
 
 router = APIRouter(prefix="/characters", tags=["Character"])
@@ -22,9 +22,9 @@ router = APIRouter(prefix="/characters", tags=["Character"])
 
 # GET /characters/personas - 각 카테고리별 키워드들을 전부 받습니다.
 @router.get("/personas", response_model=GetPersonasResponse)
-async def get_personas(
+async def get_get_personas(
     *,
-    usecase: GetPersonasUseCase = Depends(get_personas_usecase)
+    usecase: GetPersonasUseCase = Depends(get_get_personas_usecase)
 ):
     return await usecase()
 

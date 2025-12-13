@@ -22,7 +22,7 @@ def get_character_repo():
 # UseCase Factories
 
 
-def get_personas_usecase() -> GetPersonasUseCase:
+def get_get_personas_usecase() -> GetPersonasUseCase:
     return GetPersonasUseCase()
 
 
