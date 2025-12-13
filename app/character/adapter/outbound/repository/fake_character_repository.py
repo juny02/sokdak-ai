@@ -1,0 +1,35 @@
+from datetime import datetime, timezone
+
+from ulid import ULID
+
+from app.character.application.command import OrderBy
+from app.character.domain.entity import Character
+from app.character.domain.enum import CharacterType
+from app.character.domain.repository import CharacterRepository
+from app.character.domain.valueobject import Gender, Persona, Purpose, Style, Tone
+
+
+class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 상속
+    async def get(
+        self,
+        order_by=OrderBy,
+        user_id: ULID | None = None,
+        type: CharacterType | None = None,
+    ) -> list[Character]:
+        return [
+            Character(
+                id=ULID(),
+                user_id=user_id or ULID(),
+                name="Fake Character",
+                persona=Persona(
+                    gender=Gender.FEMALE,
+                    tone=Tone.CALM,
+                    style=Style.LISTENER,
+                    purpose=Purpose.CONFESSION,
+                ),
+                type=type or CharacterType.PERSISTENT,
+                last_chat_at=None,
+                created_at=datetime.now(timezone.utc),
+                updated_at=datetime.now(timezone.utc),
+            )
+        ]
