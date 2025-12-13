@@ -1,12 +1,7 @@
 from pydantic import BaseModel
 
-from app.character.domain.valueobject.persona import (
-    Gender,
-    Persona,
-    Purpose,
-    Style,
-    Tone,
-)
+from app.character.domain.enum import Gender, Purpose, Style, Tone
+from app.character.domain.valueobject import Persona
 
 
 class PersonaResponse(BaseModel):

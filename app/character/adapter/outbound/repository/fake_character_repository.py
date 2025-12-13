@@ -4,9 +4,9 @@ from ulid import ULID
 
 from app.character.application.command import OrderBy
 from app.character.domain.entity import Character
-from app.character.domain.enum import CharacterType
+from app.character.domain.enum import CharacterType, Gender, Purpose, Style, Tone
 from app.character.domain.repository import CharacterRepository
-from app.character.domain.valueobject import Gender, Persona, Purpose, Style, Tone
+from app.character.domain.valueobject import Persona
 
 
 class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 상속

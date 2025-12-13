@@ -1,10 +1,9 @@
 from pydantic import BaseModel
 
-from app.character.adapter.inbound.api.schema.response.persona_response import (
-    PersonaResponse,
-)
-from app.character.domain.entity.character import Character
-from app.character.domain.enum.character_type import CharacterType
+from app.character.domain.entity import Character
+from app.character.domain.enum import CharacterType
+
+from .persona_response import PersonaResponse
 
 
 class BaseCharacterResponse(BaseModel):

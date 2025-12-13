@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 from ulid import ULID
 
-from app.character.application.command.order_by import OrderBy
-from app.character.domain.enum.character_type import CharacterType
+from app.character.domain.enum import CharacterType
+
+from .order_by import OrderBy
 
 
 class GetCharactersCommand(BaseModel):

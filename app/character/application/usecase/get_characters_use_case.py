@@ -1,8 +1,8 @@
 from app.character.application.command.get_characters_command import (
     GetCharactersCommand,
 )
-from app.character.domain.entity.character import Character
-from app.character.domain.repository.character_repository import CharacterRepository
+from app.character.domain.entity import Character
+from app.character.domain.repository import CharacterRepository
 
 
 class GetCharactersUseCase:

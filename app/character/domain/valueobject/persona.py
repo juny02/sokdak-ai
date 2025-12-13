@@ -1,39 +1,6 @@
-from enum import Enum
 from dataclasses import dataclass
 
-class Gender(str, Enum):
-    MALE = "male"
-    FEMALE = "female"
-    NEUTRAL = "neutral"
-
-
-class Tone(str, Enum):
-    CALM = "calm"
-    WARM = "warm"
-    CHEERFUL = "cheerful"
-    SERIOUS = "serious"
-    FRIENDLY = "friendly"
-    POLITE = "polite"
-    PLAYFUL = "playful"
-
-
-class Style(str, Enum):
-    LISTENER = "listener"
-    EMPATHETIC = "empathetic"
-    ADVISOR = "advisor"
-    COACH = "coach"
-    CHATTY = "chatty"
-    MINIMAL = "minimal"
-    ANALYTICAL = "analytical"
-
-
-class Purpose(str, Enum):
-    CONFESSION = "confession"
-    COUNSELING = "counseling"
-    EMOTIONAL_SUPPORT = "emotional_support"
-    CASUAL_CHAT = "casual_chat"
-    MOTIVATION = "motivation"
-    REFLECTION = "reflection"
+from app.character.domain.enum import Gender, Purpose, Style, Tone
 
 
 @dataclass(frozen=True)
