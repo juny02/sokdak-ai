@@ -2,9 +2,10 @@ from abc import ABC, abstractmethod
 
 from ulid import ULID
 
-from app.character.application.command.order_by import OrderBy
-from app.character.domain.entity.character import Character
-from app.character.domain.enum.character_type import CharacterType
+from app.character.application.command import OrderBy
+from app.character.domain.entity import Character
+from app.character.domain.enum import CharacterType
+from app.character.domain.valueobject import Persona
 
 
 class CharacterRepository(ABC):
@@ -19,4 +20,14 @@ class CharacterRepository(ABC):
 
     @abstractmethod
     async def get_by_id(self, id: ULID) -> Character | None:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def create(
+        self,
+        user_id: ULID,
+        name: str,
+        persona: Persona,
+        type: CharacterType
+    ) -> Character:
         raise NotImplementedError

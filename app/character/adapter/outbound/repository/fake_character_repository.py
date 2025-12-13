@@ -65,3 +65,21 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
         )
+
+    async def create(
+            self,
+            user_id: ULID,
+            name: str,
+            persona: Persona,
+            type: CharacterType
+    ) -> Character:
+        return Character(
+            id=ULID(),
+            user_id=user_id,
+            name=name,
+            persona=persona,
+            type=type,
+            last_chat_at=None,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc),
+        )

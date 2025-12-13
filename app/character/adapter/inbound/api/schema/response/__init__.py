@@ -3,6 +3,7 @@ from .get_character_response import GetCharacterResponse
 from .get_characters_response import GetCharactersResponse
 from .get_personas_response import GetPersonasResponse
 from .persona_response import PersonaResponse
+from .post_character_response import PostCharacterResponse
 
 __all__ = [
     "BaseCharacterResponse",
@@ -10,4 +11,5 @@ __all__ = [
     "GetCharactersResponse",
     "GetPersonasResponse",
     "PersonaResponse",
+    "PostCharacterResponse"
 ]

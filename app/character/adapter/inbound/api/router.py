@@ -1,13 +1,22 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from ulid import ULID
 
+from app.character.adapter.inbound.api.schema.request import (
+    PostCharacterRequest,
+)
 from app.character.adapter.inbound.api.schema.response import (
     GetCharacterResponse,
     GetCharactersResponse,
     GetPersonasResponse,
+    PostCharacterResponse,
 )
-from app.character.application.command import GetCharactersCommand, OrderBy
+from app.character.application.command import (
+    CreateCharacterCommand,
+    GetCharactersCommand,
+    OrderBy,
+)
 from app.character.application.usecase import (
+    CreateCharacterUseCase,
     GetCharactersUseCase,
     GetCharacterUseCase,
     GetPersonasUseCase,
@@ -15,6 +24,7 @@ from app.character.application.usecase import (
 from app.character.domain.enum import CharacterType
 
 from .dependencies import (
+    get_create_character_usecase,
     get_get_character_usecase,
     get_get_characters_usecase,
     get_get_personas_usecase,
@@ -59,3 +69,15 @@ async def get_character_by_id(
 ):
     character = await usecase(character_id=character_id)
     return GetCharacterResponse.from_domain(character)
+
+
+# POST /characters - 캐릭터를 생성합니다.
+@router.post("", response_model=PostCharacterResponse, status_code=status.HTTP_201_CREATED)
+async def post_character(
+    *,
+    body: PostCharacterRequest,
+    usecase: CreateCharacterUseCase = Depends(get_create_character_usecase),
+):
+    cmd = CreateCharacterCommand(**body.model_dump())
+    character = await usecase(cmd)
+    return PostCharacterResponse.from_domain(character)

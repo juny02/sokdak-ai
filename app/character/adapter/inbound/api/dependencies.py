@@ -7,6 +7,7 @@ from app.character.adapter.outbound.repository import (
 
 # Application Layer
 from app.character.application.usecase import (
+    CreateCharacterUseCase,
     GetCharactersUseCase,
     GetCharacterUseCase,
     GetPersonasUseCase,
@@ -37,3 +38,8 @@ def get_get_character_usecase(
     repo=Depends(get_character_repo)
 ):
     return GetCharacterUseCase(character_repo=repo)
+
+def get_create_character_usecase(
+    repo=Depends(get_character_repo)
+):
+    return CreateCharacterUseCase(character_repo=repo)
