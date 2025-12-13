@@ -11,6 +11,7 @@ from app.character.application.usecase import (
     GetCharactersUseCase,
     GetCharacterUseCase,
     GetPersonasUseCase,
+    UpdateCharacterUseCase,
 )
 
 
@@ -43,3 +44,8 @@ def get_create_character_usecase(
     repo=Depends(get_character_repo)
 ):
     return CreateCharacterUseCase(character_repo=repo)
+
+def get_update_character_usecase(
+    repo=Depends(get_character_repo)
+):
+    return UpdateCharacterUseCase(character_repo=repo)

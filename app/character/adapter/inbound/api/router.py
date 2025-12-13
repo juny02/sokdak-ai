@@ -2,24 +2,28 @@ from fastapi import APIRouter, Depends, status
 from ulid import ULID
 
 from app.character.adapter.inbound.api.schema.request import (
+    PatchCharacterRequest,
     PostCharacterRequest,
 )
 from app.character.adapter.inbound.api.schema.response import (
     GetCharacterResponse,
     GetCharactersResponse,
     GetPersonasResponse,
+    PatchCharacterResponse,
     PostCharacterResponse,
 )
 from app.character.application.command import (
     CreateCharacterCommand,
     GetCharactersCommand,
     OrderBy,
+    UpdateCharacterCommand,
 )
 from app.character.application.usecase import (
     CreateCharacterUseCase,
     GetCharactersUseCase,
     GetCharacterUseCase,
     GetPersonasUseCase,
+    UpdateCharacterUseCase,
 )
 from app.character.domain.enum import CharacterType
 
@@ -28,6 +32,7 @@ from .dependencies import (
     get_get_character_usecase,
     get_get_characters_usecase,
     get_get_personas_usecase,
+    get_update_character_usecase,
 )
 
 router = APIRouter(prefix="/characters", tags=["Character"])
@@ -81,3 +86,16 @@ async def post_character(
     cmd = CreateCharacterCommand(**body.model_dump())
     character = await usecase(cmd)
     return PostCharacterResponse.from_domain(character)
+
+
+# PATCH /characters/{character_id} - 특정 캐릭터의 이름이나 페르소나를 수정합니다.
+@router.patch("/{character_id}", response_model=PatchCharacterResponse)
+async def patch_character(
+    *,
+    character_id: ULID,
+    body: PatchCharacterRequest,
+    usecase: UpdateCharacterUseCase = Depends(get_update_character_usecase)
+):
+    cmd = UpdateCharacterCommand(**body.model_dump())
+    character = await usecase(character_id=character_id, cmd=cmd)
+    return PatchCharacterResponse.from_domain(character)

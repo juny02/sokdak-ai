@@ -31,3 +31,10 @@ class CharacterRepository(ABC):
         type: CharacterType
     ) -> Character:
         raise NotImplementedError
+
+    @abstractmethod
+    async def update(
+        self,
+        character: Character
+    ) -> Character:
+        raise NotImplementedError
