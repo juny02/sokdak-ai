@@ -1,18 +1,19 @@
+from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from pydantic import AwareDatetime, BaseModel
 from ulid import ULID
 
 
-class Conversation(BaseModel):
+@dataclass
+class Conversation:
     id: ULID
     user_id: ULID
     character_id: ULID
     summary: str | None
     last_message: str | None
-    last_message_at: AwareDatetime | None
-    created_at: AwareDatetime
-    updated_at: AwareDatetime
+    last_message_at: datetime | None
+    created_at: datetime
+    updated_at: datetime
 
     def update_summary(self, summary: str) -> None:
         self.summary = summary
