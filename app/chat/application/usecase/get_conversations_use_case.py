@@ -10,7 +10,7 @@ class GetConversationsUseCase:
     ):
         self.conversation_repo = conversation_repo
 
-    async def __call__(self, cmd: GetConversationsCommand) -> Conversation:
+    async def __call__(self, cmd: GetConversationsCommand) -> list[Conversation]:
         return await self.conversation_repo.get(
             order_by=cmd.order_by,
             user_id=cmd.user_id,
