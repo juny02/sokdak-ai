@@ -18,23 +18,24 @@ from app.character.application.command import (
     OrderBy,
     UpdateCharacterCommand,
 )
+
 from app.character.application.usecase import (
     CreateCharacterUseCase,
+    DeleteCharacterUseCase,
     GetCharactersUseCase,
     GetCharacterUseCase,
     GetPersonasUseCase,
     UpdateCharacterUseCase,
-    DeleteCharacterUseCase,
 )
 from app.character.domain.enum import CharacterType
 
 from .dependencies import (
     get_create_character_usecase,
+    get_delete_character_usecase,
     get_get_character_usecase,
     get_get_characters_usecase,
     get_get_personas_usecase,
     get_update_character_usecase,
-    get_delete_character_usecase
 )
 
 router = APIRouter(prefix="/characters", tags=["Character"])
