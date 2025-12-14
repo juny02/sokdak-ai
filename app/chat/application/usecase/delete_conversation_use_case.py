@@ -1,3 +1,5 @@
+from ulid import ULID
+
 from app.chat.domain.repository import ConversationRepository, MessageRepository
 
 
@@ -10,7 +12,7 @@ class DeleteConversationUseCase:
         self.conversation_repo = conversation_repo
         self.message_repo = message_repo
 
-    async def __call__(self, conversation_id: str) -> None:
+    async def __call__(self, conversation_id: ULID) -> None:
         await self.message_repo.delete_by_conversation_id(
             conversation_id=conversation_id
         )
