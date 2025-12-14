@@ -89,3 +89,6 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
         character: Character
     ) -> Character:
         return Character
+
+    async def delete_by_id(self, id: ULID) -> None:
+        return None

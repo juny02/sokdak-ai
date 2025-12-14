@@ -24,6 +24,7 @@ from app.character.application.usecase import (
     GetCharacterUseCase,
     GetPersonasUseCase,
     UpdateCharacterUseCase,
+    DeleteCharacterUseCase,
 )
 from app.character.domain.enum import CharacterType
 
@@ -33,6 +34,7 @@ from .dependencies import (
     get_get_characters_usecase,
     get_get_personas_usecase,
     get_update_character_usecase,
+    get_delete_character_usecase
 )
 
 router = APIRouter(prefix="/characters", tags=["Character"])
@@ -99,3 +101,13 @@ async def patch_character(
     cmd = UpdateCharacterCommand(**body.model_dump())
     character = await usecase(character_id=character_id, cmd=cmd)
     return PatchCharacterResponse.from_domain(character)
+
+
+# DELETE /characters/{character_id} - 특정 캐릭터를 삭제합니다.
+@router.delete("/{character_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_character(
+    *,
+    character_id: ULID,
+    usecase: DeleteCharacterUseCase = Depends(get_delete_character_usecase)
+):
+    await usecase(character_id=character_id)

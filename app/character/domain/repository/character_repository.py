@@ -38,3 +38,7 @@ class CharacterRepository(ABC):
         character: Character
     ) -> Character:
         raise NotImplementedError
+
+    @abstractmethod
+    async def delete_by_id(self, id: ULID) -> None:
+        raise NotImplementedError
