@@ -1,21 +1,22 @@
+from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from pydantic import AwareDatetime, BaseModel
 from ulid import ULID
 
 from app.character.domain.enum.character_type import CharacterType
 from app.character.domain.valueobject.persona import Persona
 
 
-class Character(BaseModel):
+@dataclass
+class Character:
     id: ULID
     user_id: ULID
     name: str
     persona: Persona
     type: CharacterType
-    last_chat_at: AwareDatetime | None = None
-    created_at: AwareDatetime
-    updated_at: AwareDatetime
+    last_chat_at: datetime | None = None
+    created_at: datetime
+    updated_at: datetime
 
     def update_name(self, name: str) -> None:
         self.name = name
