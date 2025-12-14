@@ -31,3 +31,7 @@ class ConversationRepository(ABC):
     @abstractmethod
     async def delete(self, id: ULID) -> None:
         raise NotImplementedError
+    
+    @abstractmethod
+    async def get_by_character_id(self, character_id: ULID) -> Conversation | None:
+        raise NotImplementedError
