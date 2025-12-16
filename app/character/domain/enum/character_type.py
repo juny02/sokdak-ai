@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class CharacterType(Enum):
-    EPHEMERAL = "ephemeral"  
+    EPHEMERAL = "ephemeral"
     PERSISTENT = "persistent"

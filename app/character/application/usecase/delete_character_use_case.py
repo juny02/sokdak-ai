@@ -8,7 +8,7 @@ class DeleteCharacterUseCase:
     """
     캐릭터를 삭제합니다.
 
-    흐름: 
+    흐름:
         1) 캐릭터가 보유한 대화 조회 (캐릭터 1개 당 대화 1개)
         2) 대화의 메시지 삭제
         3) 대화 삭제
@@ -19,8 +19,7 @@ class DeleteCharacterUseCase:
         self,
         character_repo: CharacterRepository,
         conversation_repo: ConversationRepository,
-        message_repo: MessageRepository
-
+        message_repo: MessageRepository,
     ):
         self.character_repo = character_repo
         self.conversation_repo = conversation_repo
@@ -28,7 +27,9 @@ class DeleteCharacterUseCase:
 
     async def __call__(self, character_id: ULID) -> None:
         # 1) 캐릭터가 보유한 대화 조회
-        conversation = await self.conversation_repo.get_by_character_id(character_id=character_id)
+        conversation = await self.conversation_repo.get_by_character_id(
+            character_id=character_id
+        )
 
         # 2) 대화의 메시지 삭제
         await self.message_repo.delete_by_conversation_id(

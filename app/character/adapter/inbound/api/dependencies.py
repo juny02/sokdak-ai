@@ -47,37 +47,29 @@ def get_get_personas_usecase() -> GetPersonasUseCase:
     return GetPersonasUseCase()
 
 
-def get_get_characters_usecase(
-    repo=Depends(get_character_repo)
-):
+def get_get_characters_usecase(repo=Depends(get_character_repo)):
     return GetCharactersUseCase(character_repo=repo)
 
 
-def get_get_character_usecase(
-    repo=Depends(get_character_repo)
-):
+def get_get_character_usecase(repo=Depends(get_character_repo)):
     return GetCharacterUseCase(character_repo=repo)
 
 
-def get_create_character_usecase(
-    repo=Depends(get_character_repo)
-):
+def get_create_character_usecase(repo=Depends(get_character_repo)):
     return CreateCharacterUseCase(character_repo=repo)
 
 
-def get_update_character_usecase(
-    repo=Depends(get_character_repo)
-):
+def get_update_character_usecase(repo=Depends(get_character_repo)):
     return UpdateCharacterUseCase(character_repo=repo)
 
 
 def get_delete_character_usecase(
     character_repo=Depends(get_character_repo),
     conversation_repo=Depends(get_conversation_repo),
-    message_repo=Depends(get_message_repo)
+    message_repo=Depends(get_message_repo),
 ):
     return DeleteCharacterUseCase(
         character_repo=character_repo,
         conversation_repo=conversation_repo,
-        message_repo=message_repo
+        message_repo=message_repo,
     )

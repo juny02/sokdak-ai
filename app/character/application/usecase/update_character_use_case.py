@@ -9,7 +9,7 @@ class UpdateCharacterUseCase:
     """
     캐릭터의 이름이나 페르소나를 변경합니다.
 
-    흐름: 
+    흐름:
         1) 캐릭터 조회
         2) 이름|페르소나 변경
         3) 저장
@@ -21,7 +21,9 @@ class UpdateCharacterUseCase:
     ):
         self.character_repo = character_repo
 
-    async def __call__(self, character_id: ULID, cmd: UpdateCharacterCommand) -> Character:
+    async def __call__(
+        self, character_id: ULID, cmd: UpdateCharacterCommand
+    ) -> Character:
         # 1) 캐릭터 조회
         character = await self.character_repo.get_by_id(character_id)
 

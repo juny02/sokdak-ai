@@ -46,7 +46,7 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
                 last_chat_at=None,
                 created_at=datetime.now(timezone.utc),
                 updated_at=datetime.now(timezone.utc),
-            )
+            ),
         ]
 
     async def get_by_id(self, id: ULID) -> Character | None:
@@ -67,11 +67,7 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
         )
 
     async def create(
-        self,
-        user_id: ULID,
-        name: str,
-        persona: Persona,
-        type: CharacterType
+        self, user_id: ULID, name: str, persona: Persona, type: CharacterType
     ) -> Character:
         return Character(
             id=ULID(),
@@ -84,10 +80,7 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
             updated_at=datetime.now(timezone.utc),
         )
 
-    async def update(
-        self,
-        character: Character
-    ) -> Character:
+    async def update(self, character: Character) -> Character:
         return Character
 
     async def delete_by_id(self, id: ULID) -> None:

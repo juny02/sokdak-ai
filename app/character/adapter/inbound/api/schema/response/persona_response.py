@@ -16,5 +16,5 @@ class PersonaResponse(BaseModel):
             gender=persona.gender,
             tone=persona.tone,
             style=persona.style,
-            purpose=persona.purpose
+            purpose=persona.purpose,
         )

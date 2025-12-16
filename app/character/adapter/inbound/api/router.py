@@ -18,7 +18,6 @@ from app.character.application.command import (
     OrderBy,
     UpdateCharacterCommand,
 )
-
 from app.character.application.usecase import (
     CreateCharacterUseCase,
     DeleteCharacterUseCase,
@@ -44,8 +43,7 @@ router = APIRouter(prefix="/characters", tags=["Character"])
 # GET /characters/personas - 각 카테고리별 키워드들을 전부 받습니다.
 @router.get("/personas", response_model=GetPersonasResponse)
 async def get_get_personas(
-    *,
-    usecase: GetPersonasUseCase = Depends(get_get_personas_usecase)
+    *, usecase: GetPersonasUseCase = Depends(get_get_personas_usecase)
 ):
     return await usecase()
 
@@ -57,7 +55,7 @@ async def get_characters(
     user_id: ULID | None = None,
     type: CharacterType | None = None,
     order_by: OrderBy = OrderBy.CURR,
-    usecase: GetCharactersUseCase = Depends(get_get_characters_usecase)
+    usecase: GetCharactersUseCase = Depends(get_get_characters_usecase),
 ):
     cmd = GetCharactersCommand(
         user_id=user_id,
@@ -73,14 +71,16 @@ async def get_characters(
 async def get_character_by_id(
     *,
     character_id: ULID,
-    usecase: GetCharacterUseCase = Depends(get_get_character_usecase)
+    usecase: GetCharacterUseCase = Depends(get_get_character_usecase),
 ):
     character = await usecase(character_id=character_id)
     return GetCharacterResponse.from_domain(character)
 
 
 # POST /characters - 캐릭터를 생성합니다.
-@router.post("", response_model=PostCharacterResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "", response_model=PostCharacterResponse, status_code=status.HTTP_201_CREATED
+)
 async def post_character(
     *,
     body: PostCharacterRequest,
@@ -97,7 +97,7 @@ async def patch_character(
     *,
     character_id: ULID,
     body: PatchCharacterRequest,
-    usecase: UpdateCharacterUseCase = Depends(get_update_character_usecase)
+    usecase: UpdateCharacterUseCase = Depends(get_update_character_usecase),
 ):
     cmd = UpdateCharacterCommand(**body.model_dump())
     character = await usecase(character_id=character_id, cmd=cmd)
@@ -109,6 +109,6 @@ async def patch_character(
 async def delete_character(
     *,
     character_id: ULID,
-    usecase: DeleteCharacterUseCase = Depends(get_delete_character_usecase)
+    usecase: DeleteCharacterUseCase = Depends(get_delete_character_usecase),
 ):
     await usecase(character_id=character_id)

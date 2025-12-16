@@ -11,5 +11,5 @@ __all__ = [
     "GetCharactersUseCase",
     "GetPersonasUseCase",
     "CreateCharacterUseCase",
-    "UpdateCharacterUseCase"
+    "UpdateCharacterUseCase",
 ]

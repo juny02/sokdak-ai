@@ -56,7 +56,7 @@ class FakeConversationRepository(ConversationRepository):
 
     async def delete(self, id: ULID) -> None:
         return None
-    
+
     async def get_by_character_id(self, character_id: ULID) -> Conversation | None:
         return Conversation(
             id=ULID(),
@@ -68,4 +68,3 @@ class FakeConversationRepository(ConversationRepository):
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
         )
-    

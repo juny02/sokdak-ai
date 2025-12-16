@@ -4,10 +4,4 @@ from .purpose import Purpose
 from .style import Style
 from .tone import Tone
 
-__all__ = [
-    "CharacterType",
-    "Gender",
-    "Purpose",
-    "Style",
-    "Tone"
-]
+__all__ = ["CharacterType", "Gender", "Purpose", "Style", "Tone"]

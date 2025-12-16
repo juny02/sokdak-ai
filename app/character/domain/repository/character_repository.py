@@ -24,19 +24,12 @@ class CharacterRepository(ABC):
 
     @abstractmethod
     async def create(
-        self,
-        user_id: ULID,
-        name: str,
-        persona: Persona,
-        type: CharacterType
+        self, user_id: ULID, name: str, persona: Persona, type: CharacterType
     ) -> Character:
         raise NotImplementedError
 
     @abstractmethod
-    async def update(
-        self,
-        character: Character
-    ) -> Character:
+    async def update(self, character: Character) -> Character:
         raise NotImplementedError
 
     @abstractmethod

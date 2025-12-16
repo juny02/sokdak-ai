@@ -13,5 +13,5 @@ __all__ = [
     "GetPersonasResponse",
     "PatchCharacterResponse",
     "PersonaResponse",
-    "PostCharacterResponse"
+    "PostCharacterResponse",
 ]

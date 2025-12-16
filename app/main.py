@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from app.chat.adapter.inbound.api.router import router as chat_router
 from app.character.adapter.inbound.api.router import router as character_router
+from app.chat.adapter.inbound.api.router import router as chat_router
 
 app = FastAPI(title="Sokdak AI API", version="0.1.0")
 

@@ -15,7 +15,7 @@ class BaseCharacterResponse(BaseModel):
     last_chat_at: str | None = None
     created_at: str
     updated_at: str
-    
+
     @classmethod
     def from_domain(cls, character: Character) -> "BaseCharacterResponse":
         return cls(
@@ -25,9 +25,7 @@ class BaseCharacterResponse(BaseModel):
             persona=PersonaResponse.from_domain(character.persona),
             type=character.type,
             last_chat_at=(
-                character.last_chat_at.isoformat()
-                if character.last_chat_at
-                else None
+                character.last_chat_at.isoformat() if character.last_chat_at else None
             ),
             created_at=character.created_at.isoformat(),
             updated_at=character.updated_at.isoformat(),
