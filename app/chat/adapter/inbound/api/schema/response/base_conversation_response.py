@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 from app.chat.domain.entity import Conversation
-from app.chat.domain.enum import Language
+from app.chat.domain.enum import ConversationType, Language
 
 
 class BaseConversationResponse(BaseModel):
@@ -13,6 +13,7 @@ class BaseConversationResponse(BaseModel):
     created_at: str
     updated_at: str
     language: Language
+    conversation_type: ConversationType
 
     @classmethod
     def from_domain(cls, conversation: Conversation) -> "BaseConversationResponse":
@@ -29,4 +30,5 @@ class BaseConversationResponse(BaseModel):
             created_at=conversation.created_at.isoformat(),
             updated_at=conversation.updated_at.isoformat(),
             language=conversation.language,
+            conversation_type=conversation.conversation_type,
         )

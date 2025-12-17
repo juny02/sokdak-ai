@@ -4,13 +4,17 @@ from ulid import ULID
 
 from app.chat.application.command import OrderBy
 from app.chat.domain.entity.conversation import Conversation
-from app.chat.domain.enum import Language
+from app.chat.domain.enum import ConversationType, Language
 from app.chat.domain.repository import ConversationRepository
 
 
 class FakeConversationRepository(ConversationRepository):
     async def create(
-        self, character_id: ULID, user_id: ULID, language: Language
+        self,
+        character_id: ULID,
+        user_id: ULID,
+        language: Language,
+        conversation_type: ConversationType,
     ) -> Conversation:
         return Conversation(
             id=ULID(),
@@ -22,6 +26,7 @@ class FakeConversationRepository(ConversationRepository):
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
             language=language,
+            conversation_type=conversation_type,
         )
 
     async def get(
@@ -41,6 +46,7 @@ class FakeConversationRepository(ConversationRepository):
                 created_at=datetime.now(timezone.utc),
                 updated_at=datetime.now(timezone.utc),
                 language=Language.Korean,
+                conversation_type=ConversationType.EPHEMERAL,
             )
         ]
 
@@ -55,6 +61,7 @@ class FakeConversationRepository(ConversationRepository):
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
             language=Language.Korean,
+            conversation_type=ConversationType.EPHEMERAL,
         )
 
     async def update(self, conversation: Conversation) -> Conversation:
@@ -74,4 +81,5 @@ class FakeConversationRepository(ConversationRepository):
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
             language=Language.Korean,
+            conversation_type=ConversationType.EPHEMERAL,
         )

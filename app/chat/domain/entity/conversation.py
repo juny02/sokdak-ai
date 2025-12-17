@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from ulid import ULID
 
-from app.chat.domain.enum import Language
+from app.chat.domain.enum import ConversationType, Language
 
 
 @dataclass
@@ -17,6 +17,7 @@ class Conversation:
     created_at: datetime
     updated_at: datetime
     language: Language
+    conversation_type: ConversationType
 
     def update_summary(self, summary: str) -> None:
         self.summary = summary

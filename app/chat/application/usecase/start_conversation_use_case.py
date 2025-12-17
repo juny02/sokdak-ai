@@ -15,4 +15,5 @@ class StartConversationUseCase:
             user_id=cmd.user_id,
             character_id=cmd.character_id,
             language=cmd.language,
+            conversation_type=cmd.conversation_type,
         )

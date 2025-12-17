@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 from ulid import ULID
 
-from app.chat.domain.enum import Language
+from app.chat.domain.enum import ConversationType, Language
 
 
 class PostConversationRequest(BaseModel):
@@ -11,3 +11,4 @@ class PostConversationRequest(BaseModel):
     character_id: ULID
     user_id: ULID
     language: Language
+    conversation_type: ConversationType
