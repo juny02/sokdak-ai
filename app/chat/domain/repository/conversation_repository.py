@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from ulid import ULID
 
 from app.chat.application.command import OrderBy
-from app.chat.domain.entity.conversation import Conversation
+from app.chat.domain.entity import Conversation
 from app.chat.domain.enum import ConversationType, Language
 
 
