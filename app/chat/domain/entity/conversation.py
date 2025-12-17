@@ -25,4 +25,5 @@ class Conversation:
 
     def update_last_message(self, last_message: str) -> None:
         self.last_message = last_message
+        self.last_message_at = datetime.now(timezone.utc)
         self.updated_at = datetime.now(timezone.utc)
