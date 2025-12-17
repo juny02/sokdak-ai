@@ -4,11 +4,14 @@ from ulid import ULID
 
 from app.chat.application.command import OrderBy
 from app.chat.domain.entity.conversation import Conversation
+from app.chat.domain.enum import Language
 from app.chat.domain.repository import ConversationRepository
 
 
 class FakeConversationRepository(ConversationRepository):
-    async def create(self, character_id: ULID, user_id: ULID) -> Conversation:
+    async def create(
+        self, character_id: ULID, user_id: ULID, language: Language
+    ) -> Conversation:
         return Conversation(
             id=ULID(),
             character_id=character_id,
@@ -18,6 +21,7 @@ class FakeConversationRepository(ConversationRepository):
             last_message_at=None,
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
+            language=language,
         )
 
     async def get(
@@ -36,6 +40,7 @@ class FakeConversationRepository(ConversationRepository):
                 last_message_at=None,
                 created_at=datetime.now(timezone.utc),
                 updated_at=datetime.now(timezone.utc),
+                language=Language.Korean,
             )
         ]
 
@@ -49,6 +54,7 @@ class FakeConversationRepository(ConversationRepository):
             last_message_at=None,
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
+            language=Language.Korean,
         )
 
     async def update(self, conversation: Conversation) -> Conversation:
@@ -67,4 +73,5 @@ class FakeConversationRepository(ConversationRepository):
             last_message_at=None,
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
+            language=Language.Korean,
         )

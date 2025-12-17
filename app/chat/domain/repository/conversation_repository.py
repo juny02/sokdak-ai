@@ -4,11 +4,14 @@ from ulid import ULID
 
 from app.chat.application.command import OrderBy
 from app.chat.domain.entity.conversation import Conversation
+from app.chat.domain.enum import Language
 
 
 class ConversationRepository(ABC):
     @abstractmethod
-    async def create(self, character_id: ULID, user_id: ULID) -> Conversation:
+    async def create(
+        self, character_id: ULID, user_id: ULID, language: Language
+    ) -> Conversation:
         raise NotImplementedError
 
     @abstractmethod
