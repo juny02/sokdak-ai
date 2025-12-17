@@ -3,7 +3,7 @@ from app.chat.application.command import SendMessageCommand
 from app.chat.domain.entity import Message
 from app.chat.domain.enum import Role
 from app.chat.domain.repository import ConversationRepository, MessageRepository
-from core.ai.service.llm_service import LLMService
+from core.ai.service import LLMService
 
 
 class SendMessageUseCase:
