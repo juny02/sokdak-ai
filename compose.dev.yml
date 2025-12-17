@@ -10,3 +10,9 @@ services:
     volumes:
       - ./app:/app/app
       - ./core:/app/core 
+
+  redis:
+    image: redis:7
+    container_name: sokdak-redis
+    ports:
+      - "6379:6379"
