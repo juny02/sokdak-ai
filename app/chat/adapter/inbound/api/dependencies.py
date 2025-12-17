@@ -1,14 +1,10 @@
-# app/chat/adapter/inbound/api/dependencies.py
-
 from fastapi import Depends
 
-# Outbound (Repository Implementations)
+from app.character.adapter.outbound.repository import FakeCharacterRepository
 from app.chat.adapter.outbound.repository import (
     FakeConversationRepository,
     FakeMessageRepository,
 )
-
-# Application Layer
 from app.chat.application.usecase import (
     DeleteConversationUseCase,
     GetConversationsUseCase,
@@ -17,27 +13,35 @@ from app.chat.application.usecase import (
     SendMessageUseCase,
     StartConversationUseCase,
 )
+from core.ai.client import FakeClient, OpenAIClient
+from core.ai.service import LLMService, OpenAIService
+
 
 # Repository Factories
-
-
 def get_conversation_repo():
-    """
-    ConversationRepository 구현체 주입
-    """
     return FakeConversationRepository()
 
 
 def get_message_repo():
-    """
-    MessageRepository 구현체 주입
-    """
     return FakeMessageRepository()
 
 
-# ----------------------------
+def get_character_repo():
+    return FakeCharacterRepository()
+
+
+# AI Service Factories
+def get_llm_service_fake() -> LLMService:
+    client = FakeClient()
+    return OpenAIService(client)
+
+
+def get_llm_service() -> LLMService:
+    client = OpenAIClient()
+    return OpenAIService(client)
+
+
 # UseCase Factories
-# ----------------------------
 
 
 def get_start_conversation_usecase(
@@ -77,8 +81,12 @@ def get_get_messages_usecase(
 def get_send_message_usecase(
     message_repo=Depends(get_message_repo),
     conversation_repo=Depends(get_conversation_repo),
+    character_repo=Depends(get_character_repo),
+    llm_service=Depends(get_llm_service_fake),
 ):
     return SendMessageUseCase(
         message_repo=message_repo,
         conversation_repo=conversation_repo,
+        character_repo=character_repo,
+        llm_service=llm_service,
     )
