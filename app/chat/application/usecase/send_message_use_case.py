@@ -1,3 +1,4 @@
+from app.character.application.error import CharacterNotFoundError
 from app.character.domain.repository import CharacterRepository
 from app.chat.application.command import SendMessageCommand
 from app.chat.application.error import ConversationNotFoundError
@@ -60,6 +61,8 @@ class SendMessageUseCase:
 
         # 4) 캐릭터 페르소나 조회
         character = await self.character_repo.get_by_id(id=conversation.character_id)
+        if not character:
+            raise CharacterNotFoundError()
 
         # 5) AI 응답 생성
         chat_response = await self.llm_service.chat(
