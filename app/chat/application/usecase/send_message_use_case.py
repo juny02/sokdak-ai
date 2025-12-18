@@ -39,7 +39,7 @@ class SendMessageUseCase:
         메시지를 전송하고 AI 응답을 반환합니다.
         """
         # 1) 유저 메시지 저장
-        saved_user_message = await self.message_repo.create(
+        await self.message_repo.create(
             conversation_id=cmd.conversation_id,
             content=cmd.content,
             role=Role.USER,
@@ -77,7 +77,7 @@ class SendMessageUseCase:
         summary_response = await self.llm_service.summarize(
             previous_summary=conversation.summary,
             # TODO: 추후 설정값으로 변경
-            recent_messages=messages[-8:] + [saved_user_message, saved_ai_message],
+            recent_messages=messages[-9:] + [saved_ai_message],
         )
         conversation.update_last_message(saved_ai_message.content)
         conversation.update_summary(summary_response)
