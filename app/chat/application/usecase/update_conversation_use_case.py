@@ -1,4 +1,5 @@
 from app.chat.application.command import UpdateConversationCommand
+from app.chat.application.error import ConversationNotFoundError
 from app.chat.domain.entity import Conversation
 from app.chat.domain.repository import ConversationRepository
 
@@ -13,10 +14,14 @@ class UpdateConversationUseCase:
     async def __call__(self, cmd: UpdateConversationCommand) -> Conversation:
         # 기존 대화 조회
         conversation = await self.conversation_repo.get_by_id(id=cmd.id)
+
+        if not conversation:
+            raise ConversationNotFoundError()
+
         # 대회 업데이트
         if cmd.summary is not None:
             conversation.update_summary(cmd.summary)
         if cmd.last_message is not None:
             conversation.update_last_message(cmd.last_message)
         # 변경된 대화 저장
-        await self.conversation_repo.update(conversation=conversation)
+        return await self.conversation_repo.update(conversation=conversation)

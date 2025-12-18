@@ -1,5 +1,6 @@
 from ulid import ULID
 
+from app.chat.application.error import ConversationNotFoundError
 from app.chat.domain.entity import Conversation
 from app.chat.domain.repository import ConversationRepository
 
@@ -12,4 +13,9 @@ class GetConversationUseCase:
         self.conversation_repo = conversation_repo
 
     async def __call__(self, conversation_id: ULID) -> Conversation:
-        return await self.conversation_repo.get_by_id(id=conversation_id)
+        conversation = await self.conversation_repo.get_by_id(id=conversation_id)
+
+        if not conversation:
+            raise ConversationNotFoundError()
+
+        return conversation

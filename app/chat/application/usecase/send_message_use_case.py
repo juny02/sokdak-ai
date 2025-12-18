@@ -1,5 +1,6 @@
 from app.character.domain.repository import CharacterRepository
 from app.chat.application.command import SendMessageCommand
+from app.chat.application.error import ConversationNotFoundError
 from app.chat.domain.entity import Message
 from app.chat.domain.enum import Role
 from app.chat.domain.repository import ConversationRepository, MessageRepository
@@ -54,6 +55,9 @@ class SendMessageUseCase:
 
         # 3) 대화 조회
         conversation = await self.conversation_repo.get_by_id(id=cmd.conversation_id)
+        if not conversation:
+            raise ConversationNotFoundError()
+
         # 4) 캐릭터 페르소나 조회
         character = await self.character_repo.get_by_id(id=conversation.character_id)
 
