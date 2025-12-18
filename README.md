@@ -19,3 +19,10 @@ docker  compose  up  --build
 ```bash
 docker compose -f compose.dev.yml --env-file .env.dev up --build
 ```
+
+## 🧪 How to Test
+아래 명령어로 전체 테스트를 실행할 수 있습니다.
+
+```bash
+uv run pytest .
+```
