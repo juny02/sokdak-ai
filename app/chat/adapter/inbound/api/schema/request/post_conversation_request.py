@@ -10,5 +10,5 @@ class PostConversationRequest(BaseModel):
 
     character_id: ULID
     user_id: ULID
-    language: Language
+    language: Language = Language.AUTO
     conversation_type: ConversationType
