@@ -1,6 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from ..setting import mongo_settings
+from ..setting import settings
 
 
 class MongoClientFactory:
@@ -16,6 +16,6 @@ class MongoClientFactory:
     def get_client(cls) -> AsyncIOMotorClient:
         if cls._client is None:
             cls._client = AsyncIOMotorClient(
-                mongo_settings.MONGO_URI,
+                settings.MONGO_URI,
             )
         return cls._client

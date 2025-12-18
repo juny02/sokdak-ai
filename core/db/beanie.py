@@ -6,12 +6,12 @@ from app.character.adapter.outbound.entity import (
 )
 from app.chat.adapter.outbound.entity import ConversationDocument, MessageDocument
 
-from ..setting import mongo_settings
+from ..setting import settings
 
 
 async def init_db(client: AsyncIOMotorClient) -> None:
     await init_beanie(
-        database=client[mongo_settings.MONGO_DB_NAME],
+        database=client[settings.MONGO_DB_NAME],
         document_models=[
             CharacterDocument,
             ConversationDocument,

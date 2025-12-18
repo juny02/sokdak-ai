@@ -2,6 +2,8 @@ from typing import Dict, List
 
 from openai import AsyncOpenAI
 
+from core.setting import settings
+
 
 class OpenAIClient:
     """
@@ -11,7 +13,7 @@ class OpenAIClient:
 
     def __init__(self) -> None:
         self._client = AsyncOpenAI(
-            api_key="API_KEY",  # TODO: 환경변수 추가
+            api_key=settings.OPEN_AI_API_KEY,  # TODO: 환경변수 추가
         )
 
     async def generate(self, messages: List[Dict[str, str]]) -> str:
