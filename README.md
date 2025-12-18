@@ -17,5 +17,5 @@ docker  compose  up  --build
 
 **For Development**
 ```bash
-docker compose -f compose.dev.yml up --build
+docker compose -f compose.dev.yml --env-file .env.dev up --build
 ```
