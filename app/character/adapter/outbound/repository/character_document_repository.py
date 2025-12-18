@@ -62,7 +62,8 @@ class CharacterDocumentRepository(CharacterRepository):
         """
         now = datetime.now(timezone.utc)
 
-        doc = CharacterDocument(
+        character = Character(
+            id=ULID(),
             user_id=user_id,
             name=name,
             persona=persona,
@@ -72,8 +73,10 @@ class CharacterDocumentRepository(CharacterRepository):
             updated_at=now,
         )
 
-        await doc.insert()
-        return CharacterMapper.to_domain(doc)
+        character_doc = CharacterMapper.to_document(character)
+
+        await character_doc.insert()
+        return character
 
     async def update(self, character: Character) -> Character:
         doc = await CharacterDocument.get(character.id)
