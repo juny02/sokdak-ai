@@ -33,5 +33,4 @@ services:
 
 volumes:
   sokdak-mongo-data:
-      - ./core:/app/core 
 
