@@ -16,7 +16,7 @@ class Character:
     type: CharacterType
     created_at: datetime
     updated_at: datetime
-    last_chat_at: datetime | None = None
+    last_chat_at: datetime | None
 
     def update_name(self, name: str) -> None:
         self.name = name
