@@ -2,6 +2,7 @@ from fastapi import Depends
 
 # Outbound (Repository Implementations)
 from app.character.adapter.outbound.repository import (
+    CharacterDocumentRepository,
     FakeCharacterRepository,
 )
 
@@ -21,10 +22,14 @@ from app.chat.adapter.outbound.repository import (
 
 
 # Repository Factories
-def get_character_repo():
+def get_character_repo() -> CharacterDocumentRepository:
     """
     CharacterRepository 구현체 주입
     """
+    return CharacterDocumentRepository()
+
+
+def get_fake_character_repo():
     return FakeCharacterRepository()
 
 
