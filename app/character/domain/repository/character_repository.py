@@ -12,9 +12,9 @@ class CharacterRepository(ABC):
     @abstractmethod
     async def get(
         self,
+        user_id: ULID | None,
         order_by: OrderBy,
-        user_id: ULID | None = None,
-        type: CharacterType | None = None,
+        type: CharacterType | None,
     ) -> list[Character]:
         raise NotImplementedError
 
