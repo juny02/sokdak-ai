@@ -24,13 +24,14 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     volumes:
       - sokdak-mongo-data:/data/db
-
-volumes:
-  sokdak-mongo-data:
-      - ./core:/app/core 
-
+  
   redis:
     image: redis:7
     container_name: sokdak-redis
     ports:
       - "6379:6379"
+
+volumes:
+  sokdak-mongo-data:
+      - ./core:/app/core 
+
