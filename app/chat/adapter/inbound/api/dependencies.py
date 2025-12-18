@@ -4,8 +4,8 @@ from ulid import ULID
 from app.character.adapter.outbound.repository import FakeCharacterRepository
 from app.character.domain.repository import CharacterRepository
 from app.chat.adapter.outbound.repository import (
-    FakeConversationRepository,
-    FakeMessageRepository,
+    ConversationDocumentRepository,
+    MessageDocumentRepository,
     RedisMessageRepository,
 )
 from app.chat.application.usecase import (
@@ -25,14 +25,14 @@ from core.infra.redis.client import get_redis_client
 
 # Repository Factories
 def get_conversation_repo():
-    return FakeConversationRepository()
+    return ConversationDocumentRepository()
 
 
 def get_persistent_message_repo():
     """
     PERSISTENT 대화에서 사용되는 메시지 레포지토리를 반환합니다.
     """
-    return FakeMessageRepository()
+    return MessageDocumentRepository()
 
 
 def get_ephemeral_message_repo():
