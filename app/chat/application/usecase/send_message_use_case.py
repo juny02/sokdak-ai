@@ -78,7 +78,6 @@ class SendMessageUseCase:
             previous_summary=conversation.summary,
             # TODO: 추후 설정값으로 변경
             recent_messages=messages[-8:] + [saved_user_message, saved_ai_message],
-            language=conversation.language,
         )
         conversation.update_last_message(saved_ai_message.content)
         conversation.update_summary(summary_response)

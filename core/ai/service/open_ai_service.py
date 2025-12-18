@@ -36,12 +36,10 @@ class OpenAIService:
         *,
         previous_summary: str | None,
         recent_messages: list[Message],
-        language: Language,
     ) -> str:
         messages = OpenAISummaryPrompt.build(
             previous_summary=previous_summary,
             history=recent_messages,
-            language=language,
         )
 
         return await self._client.generate(messages)
