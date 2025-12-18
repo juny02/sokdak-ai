@@ -1,6 +1,7 @@
 from ulid import ULID
 
 from app.character.application.command import UpdateCharacterCommand
+from app.character.application.error import CharacterNotFoundError
 from app.character.domain.entity import Character
 from app.character.domain.repository import CharacterRepository
 
@@ -27,9 +28,8 @@ class UpdateCharacterUseCase:
         # 1) 캐릭터 조회
         character = await self.character_repo.get_by_id(character_id)
 
-        if character is None:
-            pass
-            # 추후 구현
+        if not character:
+            raise CharacterNotFoundError()
 
         # 2) Command에 포함된 값만 선택적으로 반영
         if cmd.name is not None:
