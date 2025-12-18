@@ -14,4 +14,6 @@ class StartConversationUseCase:
         return await self.conversation_repo.create(
             user_id=cmd.user_id,
             character_id=cmd.character_id,
+            language=cmd.language,
+            conversation_type=cmd.conversation_type,
         )

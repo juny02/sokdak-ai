@@ -3,6 +3,8 @@ from datetime import datetime, timezone
 
 from ulid import ULID
 
+from app.chat.domain.enum import ConversationType, Language
+
 
 @dataclass
 class Conversation:
@@ -14,6 +16,8 @@ class Conversation:
     last_message_at: datetime | None
     created_at: datetime
     updated_at: datetime
+    language: Language
+    conversation_type: ConversationType
 
     def update_summary(self, summary: str) -> None:
         self.summary = summary
@@ -21,4 +25,5 @@ class Conversation:
 
     def update_last_message(self, last_message: str) -> None:
         self.last_message = last_message
+        self.last_message_at = datetime.now(timezone.utc)
         self.updated_at = datetime.now(timezone.utc)
