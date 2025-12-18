@@ -19,14 +19,10 @@ class CharacterDocumentRepository(CharacterRepository):
 
     async def get(
         self,
-        user_id: ULID | None = None,
-        order_by: OrderBy = OrderBy.CURR,
-        type: CharacterType | None = None,
+        user_id: ULID | None,
+        order_by: OrderBy,
+        type: CharacterType | None,
     ) -> list[Character]:
-        """
-        조건에 맞는 Character 목록 조회
-        """
-
         conditions = []
 
         if user_id is not None:
@@ -49,11 +45,10 @@ class CharacterDocumentRepository(CharacterRepository):
         return [CharacterMapper.to_domain(doc) for doc in docs]
 
     async def get_by_id(self, id: ULID) -> Character | None:
-        """
-        ID로 단일 Character 조회
-        """
         doc = await CharacterDocument.get(id)
-        return CharacterMapper.to_domain(doc) if doc else None
+        if doc is None:
+            return None
+        return CharacterMapper.to_domain(doc)
 
     async def create(
         self,
@@ -67,8 +62,7 @@ class CharacterDocumentRepository(CharacterRepository):
         """
         now = datetime.now(timezone.utc)
 
-        character = Character(
-            id=ULID(),
+        doc = CharacterDocument(
             user_id=user_id,
             name=name,
             persona=persona,
@@ -78,21 +72,14 @@ class CharacterDocumentRepository(CharacterRepository):
             updated_at=now,
         )
 
-        doc = CharacterMapper.to_document(character)
         await doc.insert()
-
-        return character
+        return CharacterMapper.to_domain(doc)
 
     async def update(self, character: Character) -> Character:
-        """
-        기존 Character 업데이트
-        """
-        # 1. 기존 Document 조회
         doc = await CharacterDocument.get(character.id)
-        if not doc:
-            raise ValueError(f"Character {character.id} not found")
+        if doc is None:
+            raise ValueError("Character not found")
 
-        # 2. 필드 업데이트
         doc.name = character.name
         doc.type = character.type
         doc.persona = {
@@ -101,18 +88,13 @@ class CharacterDocumentRepository(CharacterRepository):
             "style": character.persona.style.value,
             "purpose": character.persona.purpose.value,
         }
+        doc.updated_at = character.updated_at
         doc.last_chat_at = character.last_chat_at
-        doc.updated_at = datetime.now(timezone.utc)
 
-        # 3. 저장
         await doc.save()
-
         return CharacterMapper.to_domain(doc)
 
     async def delete_by_id(self, id: ULID) -> None:
-        """
-        Character 삭제
-        """
         doc = await CharacterDocument.get(id)
-        if doc:
+        if doc is not None:
             await doc.delete()
