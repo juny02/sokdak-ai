@@ -1,6 +1,8 @@
 from pydantic import BaseModel, ConfigDict
 from ulid import ULID
 
+from app.character.domain.enum import CharacterType
+
 from .persona_request import PersonaRequest
 
 
@@ -10,4 +12,4 @@ class PostCharacterRequest(BaseModel):
     user_id: ULID
     name: str
     persona: PersonaRequest
-    type: str
+    type: CharacterType
