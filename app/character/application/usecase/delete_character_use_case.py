@@ -1,6 +1,7 @@
 from ulid import ULID
 
 from app.character.domain.repository import CharacterRepository
+from app.chat.application.command import OrderBy
 from app.chat.domain.repository import ConversationRepository, MessageRepository
 
 
@@ -27,17 +28,17 @@ class DeleteCharacterUseCase:
 
     async def __call__(self, character_id: ULID) -> None:
         # 1) 캐릭터가 보유한 대화 조회
-        conversation = await self.conversation_repo.get_by_character_id(
-            character_id=character_id
+        conversation_list = await self.conversation_repo.get(
+            order_by=OrderBy.DESC, character_id=character_id
         )
 
-        # 2) 대화의 메시지 삭제
-        await self.message_repo.delete_by_conversation_id(
-            conversation_id=conversation.id
-        )
-
-        # 3) 대화 삭제
-        await self.conversation_repo.delete(id=conversation.id)
+        for conversation in conversation_list:
+            # 2) 대화의 메시지 삭제
+            await self.message_repo.delete_by_conversation_id(
+                conversation_id=conversation.id
+            )
+            # 3) 대화 삭제
+            await self.conversation_repo.delete(id=conversation.id)
 
         # 4) 캐릭터 삭제
         await self.character_repo.delete_by_id(id=character_id)

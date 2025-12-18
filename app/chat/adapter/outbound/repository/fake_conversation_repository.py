@@ -69,17 +69,3 @@ class FakeConversationRepository(ConversationRepository):
 
     async def delete(self, id: ULID) -> None:
         return None
-
-    async def get_by_character_id(self, character_id: ULID) -> Conversation | None:
-        return Conversation(
-            id=ULID(),
-            character_id=character_id,
-            user_id=ULID(),
-            summary=None,
-            last_message=None,
-            last_message_at=None,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
-            language=Language.KOREAN,
-            conversation_type=ConversationType.EPHEMERAL,
-        )
