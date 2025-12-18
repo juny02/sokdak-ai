@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from ulid import ULID
 
-from app.character.adapter.outbound.repository import FakeCharacterRepository
+from app.character.adapter.outbound.repository import CharacterDocumentRepository
 from app.character.domain.repository import CharacterRepository
 from app.chat.adapter.outbound.repository import (
     ConversationDocumentRepository,
@@ -18,7 +18,7 @@ from app.chat.application.usecase import (
 )
 from app.chat.domain.enum import ConversationType
 from app.chat.domain.repository import ConversationRepository, MessageRepository
-from core.ai.client import FakeClient, OpenAIClient
+from core.ai.client import OpenAIClient
 from core.ai.service import LLMService, OpenAIService
 from core.infra.redis.client import get_redis_client
 
@@ -44,7 +44,7 @@ def get_ephemeral_message_repo():
 
 
 def get_character_repo():
-    return FakeCharacterRepository()
+    return CharacterDocumentRepository()
 
 
 async def get_message_repo(
@@ -79,7 +79,7 @@ async def get_message_repo(
 
 # AI Service Factories
 def get_llm_service_fake() -> LLMService:
-    client = FakeClient()
+    client = OpenAIClient()
     return OpenAIService(client)
 
 
