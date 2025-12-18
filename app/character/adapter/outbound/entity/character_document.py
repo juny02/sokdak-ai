@@ -20,7 +20,7 @@ class CharacterDocument(Document):
     persona: Dict[str, Any]
     created_at: datetime
     updated_at: datetime
-    last_chat_at: Optional[datetime] | None = None
+    last_chat_at: Optional[datetime] | None
 
     class Settings:
         name = "characters"
