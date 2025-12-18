@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from ulid import ULID
 
 from app.character.adapter.outbound.repository import FakeCharacterRepository
@@ -66,7 +66,10 @@ async def get_message_repo(
     conversation = await conversation_repo.get_by_id(conversation_id)
 
     if not conversation:
-        raise ValueError("Conversation not found")  # TODO: 적절한 예외 처리로 변경
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Conversation not found",
+        )
 
     if conversation.conversation_type == ConversationType.EPHEMERAL:
         return ephemeral_message_repo

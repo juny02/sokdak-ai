@@ -1,5 +1,5 @@
 from app.chat.domain.entity import Message
-from app.chat.domain.enum import Role
+from app.chat.domain.enum import Language, Role
 
 from .message import OpenAIMessage
 
@@ -25,3 +25,12 @@ class OpenAIMessageFactory:
             return {"role": "user", "content": msg.content}
         else:  # TODO: 예외처리
             return {"role": msg.role, "content": msg.content}
+
+    @staticmethod
+    def set_language(language: Language) -> OpenAIMessage:
+        if language == Language.AUTO:
+            content = "Please respond in the same language as the user's last message."
+        else:
+            content = f"Please respond only in {language.value}."
+
+        return OpenAIMessageFactory.system(content)

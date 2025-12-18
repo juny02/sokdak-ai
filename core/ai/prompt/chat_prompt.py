@@ -35,9 +35,7 @@ class OpenAIChatPrompt:
         )
 
         # language system
-        messages.append(
-            OpenAIMessageFactory.system(f"Please respond only in {language.value}.")
-        )
+        messages.append(OpenAIMessageFactory.set_language(language))
 
         # conversation summary
         if summary:

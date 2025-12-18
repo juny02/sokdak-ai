@@ -15,17 +15,21 @@ class OpenAISummaryPrompt:
     )
 
     @classmethod
+    # 영어를 기본값으로 설정
     def build(
-        cls, *, previous_summary: str | None, history: List[Message], language: Language
+        cls,
+        *,
+        previous_summary: str | None,
+        history: List[Message],
+        language: Language = Language.ENGLISH,
     ) -> List[OpenAIMessage]:
         messages: List[OpenAIMessage] = []
 
-        # system: rules + language
-        messages.append(
-            OpenAIMessageFactory.system(
-                f"{cls.BASE_SYSTEM}\nWrite the updated summary in {language.value}."
-            )
-        )
+        # base system
+        messages.append(OpenAIMessageFactory.system(cls.BASE_SYSTEM))
+
+        # language
+        messages.append(OpenAIMessageFactory.set_language(language))
 
         # previous summary (있을 때만)
         if previous_summary:

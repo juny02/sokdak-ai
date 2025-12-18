@@ -45,7 +45,7 @@ class FakeConversationRepository(ConversationRepository):
                 last_message_at=None,
                 created_at=datetime.now(timezone.utc),
                 updated_at=datetime.now(timezone.utc),
-                language=Language.Korean,
+                language=Language.KOREAN,
                 conversation_type=ConversationType.EPHEMERAL,
             )
         ]
@@ -60,7 +60,7 @@ class FakeConversationRepository(ConversationRepository):
             last_message_at=None,
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
-            language=Language.Korean,
+            language=Language.KOREAN,
             conversation_type=ConversationType.EPHEMERAL,
         )
 
@@ -80,6 +80,6 @@ class FakeConversationRepository(ConversationRepository):
             last_message_at=None,
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
-            language=Language.Korean,
+            language=Language.KOREAN,
             conversation_type=ConversationType.EPHEMERAL,
         )
