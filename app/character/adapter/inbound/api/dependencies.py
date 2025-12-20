@@ -3,21 +3,22 @@ from fastapi import Depends
 # Outbound (Repository Implementations)
 from app.character.adapter.outbound.repository import (
     CharacterDocumentRepository,
-    FakeCharacterRepository,
 )
 
 # Application Layer
 from app.character.application.usecase import (
     CreateCharacterUseCase,
     DeleteCharacterUseCase,
+    GetCharacterPresetsUseCase,
     GetCharactersUseCase,
     GetCharacterUseCase,
     GetPersonasUseCase,
     UpdateCharacterUseCase,
 )
+from app.character.domain.service.character_preset_service import CharacterPresetService
 from app.chat.adapter.outbound.repository import (
-    FakeConversationRepository,
-    FakeMessageRepository,
+    ConversationDocumentRepository,
+    MessageDocumentRepository,
 )
 
 
@@ -29,27 +30,34 @@ def get_character_repo() -> CharacterDocumentRepository:
     return CharacterDocumentRepository()
 
 
-def get_fake_character_repo():
-    return FakeCharacterRepository()
-
-
 def get_conversation_repo():
     """
     ConversationRepository 구현체 주입
     """
-    return FakeConversationRepository()
+    return ConversationDocumentRepository()
 
 
 def get_message_repo():
     """
     MessageRepository 구현체 주입
     """
-    return FakeMessageRepository()
+    return MessageDocumentRepository()
+
+
+def get_character_preset_service() -> CharacterPresetService:
+    """
+    CharacterPresetService 구현체 주입
+    """
+    return CharacterPresetService()
 
 
 # UseCase Factories
 def get_get_personas_usecase() -> GetPersonasUseCase:
     return GetPersonasUseCase()
+
+
+def get_get_character_presets_usecase(service=Depends(get_character_preset_service)):
+    return GetCharacterPresetsUseCase(character_preset_service=service)
 
 
 def get_get_characters_usecase(repo=Depends(get_character_repo)):
