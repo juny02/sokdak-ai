@@ -1,0 +1,41 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        project:
+          - dir: .
+            test_path: test
+            dependencies: ""
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          if [ -n "${{ matrix.project.dependencies }}" ]; then
+            sudo apt-get update
+            sudo apt-get install -y ${{ matrix.project.dependencies }}
+          fi
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install the project
+        working-directory: ${{ matrix.project.dir }}
+        run: uv sync --frozen
+
+      - name: Run tests
+        working-directory: ${{ matrix.project.dir }}
+        run: |
+            PYTHONPATH=. uv run pytest -vv --maxfail=1
