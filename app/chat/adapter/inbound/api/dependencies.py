@@ -18,7 +18,7 @@ from app.chat.application.usecase import (
 )
 from app.chat.domain.enum import ConversationType
 from app.chat.domain.repository import ConversationRepository, MessageRepository
-from core.ai.client import OpenAIClient
+from core.ai.client import FakeClient, LLMClient, OpenAIClient
 from core.ai.service import LLMService, OpenAIService
 from core.infra.redis.client import get_redis_client
 
@@ -77,14 +77,23 @@ async def get_message_repo(
     return persistent_message_repo
 
 
-# AI Service Factories
-def get_llm_service_fake() -> LLMService:
-    client = OpenAIClient()
+def get_llm_client():
+    return OpenAIClient()
+
+
+def get_llm_client_fake():
+    return FakeClient()
+
+
+def get_llm_service(
+    client: LLMClient = Depends(get_llm_client),
+) -> LLMService:
     return OpenAIService(client)
 
 
-def get_llm_service() -> LLMService:
-    client = OpenAIClient()
+def get_llm_service_fake(
+    client: LLMClient = Depends(get_llm_client_fake),
+) -> LLMService:
     return OpenAIService(client)
 
 
@@ -129,7 +138,7 @@ async def get_send_message_usecase(
     message_repo: MessageRepository = Depends(get_message_repo),
     conversation_repo: ConversationRepository = Depends(get_conversation_repo),
     character_repo: CharacterRepository = Depends(get_character_repo),
-    llm_service: LLMService = Depends(get_llm_service_fake),
+    llm_service: LLMService = Depends(get_llm_service),
 ) -> SendMessageUseCase:
     return SendMessageUseCase(
         message_repo=message_repo,
