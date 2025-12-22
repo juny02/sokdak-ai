@@ -15,18 +15,11 @@ jobs:
         project:
           - dir: .
             test_path: test
-            dependencies: ""
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install system dependencies
-        run: |
-          if [ -n "${{ matrix.project.dependencies }}" ]; then
-            sudo apt-get update
-            sudo apt-get install -y ${{ matrix.project.dependencies }}
-          fi
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
