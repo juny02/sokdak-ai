@@ -6,6 +6,7 @@ from app.chat.domain.enum import ConversationType, Language
 
 class BaseConversationResponse(BaseModel):
     id: str
+    user_id: str
     character_id: str
     summary: str | None = None
     last_message: str | None = None
@@ -20,6 +21,7 @@ class BaseConversationResponse(BaseModel):
         return cls(
             id=str(conversation.id),
             character_id=str(conversation.character_id),
+            user_id=str(conversation.user_id),
             summary=conversation.summary,
             last_message=conversation.last_message,
             last_message_at=(
