@@ -6,6 +6,7 @@ from app.character.adapter.inbound.api.schema.request import (
     PostCharacterRequest,
 )
 from app.character.adapter.inbound.api.schema.response import (
+    GetCharacterPresetsResponse,
     GetCharacterResponse,
     GetCharactersResponse,
     GetPersonasResponse,
@@ -21,6 +22,7 @@ from app.character.application.command import (
 from app.character.application.usecase import (
     CreateCharacterUseCase,
     DeleteCharacterUseCase,
+    GetCharacterPresetsUseCase,
     GetCharactersUseCase,
     GetCharacterUseCase,
     GetPersonasUseCase,
@@ -31,6 +33,7 @@ from app.character.domain.enum import CharacterType
 from .dependencies import (
     get_create_character_usecase,
     get_delete_character_usecase,
+    get_get_character_presets_usecase,
     get_get_character_usecase,
     get_get_characters_usecase,
     get_get_personas_usecase,
@@ -64,6 +67,15 @@ async def get_characters(
     )
     characters = await usecase(cmd)
     return GetCharactersResponse.from_domain(characters)
+
+
+# GET /characters/presets - 기본 캐릭터들을 받습니다.
+@router.get("/presets", response_model=GetCharacterPresetsResponse)
+async def get_character_presets(
+    *, usecase: GetCharacterPresetsUseCase = Depends(get_get_character_presets_usecase)
+):
+    presets = await usecase()
+    return GetCharacterPresetsResponse.from_domain(presets)
 
 
 # GET /characters/{character_id} - 특정 id의 캐릭터를 받습니다.
