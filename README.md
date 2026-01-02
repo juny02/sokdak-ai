@@ -12,7 +12,7 @@ FastAPI 기반 대화 생성 서버입니다.
 **For Production**
 
 ```bash
-docker  compose  up  --build
+docker compose -f compose.prod.yml --env-file .env.prod up --build
 ```
 
 **For Development**
