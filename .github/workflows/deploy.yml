@@ -6,13 +6,18 @@ on:
     types:
       - completed
 
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  IMAGE_NAME: sokdak-ai-api
+  IMAGE_TAG: latest
+
 jobs:
   deploy:
     if: >
       ${{ github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.head_branch == 'main'}}
+      github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,28 +28,40 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       # 2. ECR 로그인
       - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       # 3. Docker 이미지 빌드 & ECR 푸시
       - name: Build and push Docker image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sokdak-api/ai
-
-          docker build -t $IMAGE_URI:latest .
-          docker push $IMAGE_URI:latest
+          docker build -t $ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
 
       # 4. EC2 배포
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
+          envs: AWS_REGION,ECR_REGISTRY
           script: |
             cd /home/ubuntu/sokdak-ai
-            docker compose pull
-            docker compose up -d
+            
+            # ECR 로그인
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+            
+            # Docker Compose로 배포
+            docker compose --env-file .env.prod -f compose.prod.yml pull
+            docker compose --env-file .env.prod -f compose.prod.yml up -d
+            
+            # 사용하지 않는 이미지 정리
+            docker image prune -af
