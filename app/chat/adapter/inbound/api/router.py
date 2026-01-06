@@ -27,6 +27,7 @@ from app.chat.application.usecase import (
     SendMessageUseCase,
     StartConversationUseCase,
 )
+from core.auth import get_current_user
 
 from .dependencies import (
     get_delete_conversation_usecase,
@@ -37,7 +38,9 @@ from .dependencies import (
     get_start_conversation_usecase,
 )
 
-router = APIRouter(prefix="/conversations", tags=["Chat"])
+router = APIRouter(
+    prefix="/conversations", tags=["Chat"], dependencies=[Depends(get_current_user)]
+)
 
 
 # POST /conversations — 대화를 생성합니다.

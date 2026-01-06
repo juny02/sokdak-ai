@@ -29,6 +29,7 @@ from app.character.application.usecase import (
     UpdateCharacterUseCase,
 )
 from app.character.domain.enum import CharacterType
+from core.auth import get_current_user
 
 from .dependencies import (
     get_create_character_usecase,
@@ -40,7 +41,9 @@ from .dependencies import (
     get_update_character_usecase,
 )
 
-router = APIRouter(prefix="/characters", tags=["Character"])
+router = APIRouter(
+    prefix="/characters", tags=["Character"], dependencies=[Depends(get_current_user)]
+)
 
 
 # GET /characters/personas - 각 카테고리별 키워드들을 전부 받습니다.
