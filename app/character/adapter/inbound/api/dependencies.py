@@ -16,6 +16,7 @@ from app.character.application.usecase import (
     GetPersonasUseCase,
     UpdateCharacterUseCase,
 )
+from app.character.domain.enum import CharacterType
 from app.character.domain.service.character_preset_service import CharacterPresetService
 from app.chat.adapter.outbound.repository import (
     ConversationDocumentRepository,
@@ -62,6 +63,31 @@ def get_ephemeral_message_repo():
     """
     redis = get_redis_client()
     return RedisMessageRepository(redis=redis)
+
+
+async def get_message_repo_by_character_id(
+    character_id: ULID,
+    character_repo: CharacterDocumentRepository = Depends(get_character_repo),
+    ephemeral_message_repo: MessageRepository = Depends(get_ephemeral_message_repo),
+    persistent_message_repo: MessageRepository = Depends(get_persistent_message_repo),
+) -> MessageRepository:
+    """
+    Character 타입에 따라 적절한 MessageRepository를 반환합니다.
+    - EPHEMERAL  → RedisMessageRepository (TTL 기반)
+    - PERSISTENT → DBMessageRepository
+    """
+    character = await character_repo.get_by_id(character_id)
+
+    if not character:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Character not found",
+        )
+
+    if character.type == CharacterType.EPHEMERAL:
+        return ephemeral_message_repo
+
+    return persistent_message_repo
 
 
 async def get_message_repo(
@@ -122,7 +148,7 @@ def get_update_character_usecase(repo=Depends(get_character_repo)):
 def get_delete_character_usecase(
     character_repo=Depends(get_character_repo),
     conversation_repo=Depends(get_conversation_repo),
-    message_repo=Depends(get_message_repo),
+    message_repo=Depends(get_message_repo_by_character_id),
 ):
     return DeleteCharacterUseCase(
         character_repo=character_repo,
