@@ -29,7 +29,7 @@ class DeleteCharacterUseCase:
     async def __call__(self, character_id: ULID) -> None:
         # 1) 캐릭터가 보유한 대화 조회
         conversation_list = await self.conversation_repo.get(
-            order_by=OrderBy.DESC, character_id=character_id
+            order_by=OrderBy.DESC, character_id=character_id, user_id=None
         )
 
         for conversation in conversation_list:
