@@ -19,7 +19,11 @@ class OpenAIChatPrompt:
     )
 
     LANGUAGE_INSTRUCTIONS = {
-        Language.AUTO: "You must respond in the same language as the user's message.",
+        Language.AUTO: (
+            "You must respond in the same language as the user's latest message. "
+            "Match the language exactly - if the user writes in Korean, "
+            "respond in Korean. If the user writes in English, respond in English."
+        ),
         Language.KOREAN: (
             "You must respond entirely in Korean. "
             "Do not use any English words or phrases."
