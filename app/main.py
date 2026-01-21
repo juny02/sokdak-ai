@@ -7,6 +7,9 @@ from app.character.adapter.inbound.api.router import router as character_router
 from app.chat.adapter.inbound.api.error_handlers import chat_error_handlers
 from app.chat.adapter.inbound.api.router import router as chat_router
 from core.db import MongoClientFactory, init_db
+from core.logging import setup_logging
+from core.middleware import LoggingMiddleware
+from core.setting import settings
 
 
 @asynccontextmanager
@@ -26,7 +29,11 @@ async def lifespan(app: FastAPI):
         MongoClientFactory._client = None
 
 
+setup_logging(settings.LOG_LEVEL)
+
 app = FastAPI(title="Sokdak AI API", version="0.1.0", lifespan=lifespan)
+
+app.add_middleware(LoggingMiddleware)
 
 for exc, handler in {
     **chat_error_handlers,
