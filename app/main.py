@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.character.adapter.inbound.api.error_handlers import character_error_handlers
 from app.character.adapter.inbound.api.router import router as character_router
@@ -44,3 +45,5 @@ for exc, handler in {
 
 app.include_router(chat_router)
 app.include_router(character_router)
+
+Instrumentator().instrument(app).expose(app)
