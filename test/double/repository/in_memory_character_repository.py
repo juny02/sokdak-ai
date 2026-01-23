@@ -4,7 +4,7 @@ from ulid import ULID
 
 from app.character.application.command import OrderBy
 from app.character.domain.entity import Character
-from app.character.domain.enum import CharacterType
+from app.character.domain.enum import Appearance, CharacterType
 from app.character.domain.repository import CharacterRepository
 from app.character.domain.valueobject import Persona
 
@@ -25,6 +25,7 @@ class InMemoryCharacterRepository(CharacterRepository):
         user_id: ULID,
         name: str,
         persona: Persona,
+        appearance: Appearance,
         type: CharacterType,
     ) -> Character:
         now = datetime.now(timezone.utc)
@@ -34,6 +35,7 @@ class InMemoryCharacterRepository(CharacterRepository):
             user_id=user_id,
             name=name,
             persona=persona,
+            appearance=appearance,
             type=type,
             last_chat_at=None,
             created_at=now,

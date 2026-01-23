@@ -15,11 +15,11 @@ async def test_post_character_creates_character(client):
         "user_id": str(ULID()),
         "name": "테스트 캐릭터",
         "persona": {
-            "gender": "female",
             "tone": "calm",
             "style": "listener",
             "purpose": "confession",
         },
+        "appearance": "friend",
         "type": "persistent",
     }
 
@@ -35,7 +35,7 @@ async def test_post_character_creates_character(client):
     assert body["name"] == payload["name"]
     assert body["type"] == payload["type"]
 
-    assert body["persona"]["gender"] == payload["persona"]["gender"]
     assert body["persona"]["tone"] == payload["persona"]["tone"]
     assert body["persona"]["style"] == payload["persona"]["style"]
     assert body["persona"]["purpose"] == payload["persona"]["purpose"]
+    assert body["appearance"] == payload["appearance"]
