@@ -5,7 +5,7 @@ from beanie import Document
 from pydantic import Field
 from ulid import ULID
 
-from app.character.domain.enum import CharacterType
+from app.character.domain.enum import Appearance, CharacterType
 
 
 class CharacterDocument(Document):
@@ -18,6 +18,7 @@ class CharacterDocument(Document):
     name: str
     type: CharacterType
     persona: Dict[str, Any]
+    appearance: Appearance
     created_at: datetime
     updated_at: datetime
     last_chat_at: Optional[datetime] | None
