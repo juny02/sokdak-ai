@@ -1,4 +1,4 @@
-from app.character.domain.enum import Gender, Purpose, Style, Tone
+from app.character.domain.enum import Purpose, Style, Tone
 from app.character.domain.valueobject import Persona
 
 
@@ -56,13 +56,6 @@ class OpenAIPersonaMapper:
         Style.ANALYTICAL: "Use clear structure and logical reasoning.",
     }
 
-    # ---- gender (약한 영향) ----
-    GENDER_MAP = {
-        Gender.MALE: "Use a subtly masculine speech style.",
-        Gender.FEMALE: "Use a subtly feminine speech style.",
-        Gender.NEUTRAL: "Use a gender-neutral speech style.",
-    }
-
     @classmethod
     def system_prompt(cls, persona: Persona) -> str:
         parts: list[str] = [cls.BASE]
@@ -75,8 +68,5 @@ class OpenAIPersonaMapper:
 
         # style
         parts.append(cls.STYLE_MAP[persona.style])
-
-        # gender (가장 약함)
-        parts.append(cls.GENDER_MAP[persona.gender])
 
         return "\n\n".join(parts)
