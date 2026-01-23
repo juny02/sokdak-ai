@@ -6,7 +6,7 @@ from app.character.adapter.outbound.entity.character_document import CharacterDo
 from app.character.adapter.outbound.mapper.character_mapper import CharacterMapper
 from app.character.application.command import OrderBy
 from app.character.domain.entity import Character
-from app.character.domain.enum import CharacterType
+from app.character.domain.enum import Appearance, CharacterType
 from app.character.domain.repository import CharacterRepository
 from app.character.domain.valueobject import Persona
 
@@ -55,6 +55,7 @@ class CharacterDocumentRepository(CharacterRepository):
         user_id: ULID,
         name: str,
         persona: Persona,
+        appearance: Appearance,
         type: CharacterType,
     ) -> Character:
         """
@@ -67,6 +68,7 @@ class CharacterDocumentRepository(CharacterRepository):
             user_id=user_id,
             name=name,
             persona=persona,
+            appearance=appearance,
             type=type,
             last_chat_at=None,
             created_at=now,
@@ -86,11 +88,11 @@ class CharacterDocumentRepository(CharacterRepository):
         doc.name = character.name
         doc.type = character.type
         doc.persona = {
-            "gender": character.persona.gender.value,
             "tone": character.persona.tone.value,
             "style": character.persona.style.value,
             "purpose": character.persona.purpose.value,
         }
+        doc.appearance = character.appearance
         doc.updated_at = character.updated_at
         doc.last_chat_at = character.last_chat_at
 

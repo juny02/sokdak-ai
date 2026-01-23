@@ -4,7 +4,7 @@ from ulid import ULID
 
 from app.character.application.command import OrderBy
 from app.character.domain.entity import Character
-from app.character.domain.enum import CharacterType, Gender, Purpose, Style, Tone
+from app.character.domain.enum import Appearance, CharacterType, Purpose, Style, Tone
 from app.character.domain.repository import CharacterRepository
 from app.character.domain.valueobject import Persona
 
@@ -22,11 +22,11 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
                 user_id=user_id or ULID(),
                 name="Fake Character",
                 persona=Persona(
-                    gender=Gender.FEMALE,
                     tone=Tone.CALM,
                     style=Style.LISTENER,
                     purpose=Purpose.CONFESSION,
                 ),
+                appearance=Appearance.PRIEST,
                 type=type or CharacterType.PERSISTENT,
                 last_chat_at=None,
                 created_at=datetime.now(timezone.utc),
@@ -37,11 +37,11 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
                 user_id=user_id or ULID(),
                 name="Fake Character2",
                 persona=Persona(
-                    gender=Gender.MALE,
                     tone=Tone.CHEERFUL,
                     style=Style.ADVISOR,
                     purpose=Purpose.COUNSELING,
                 ),
+                appearance=Appearance.FRIEND,
                 type=type or CharacterType.EPHEMERAL,
                 last_chat_at=None,
                 created_at=datetime.now(timezone.utc),
@@ -55,11 +55,11 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
             user_id=ULID(),
             name="Fake Character by ID",
             persona=Persona(
-                gender=Gender.FEMALE,
                 tone=Tone.CALM,
                 style=Style.LISTENER,
                 purpose=Purpose.CONFESSION,
             ),
+            appearance=Appearance.PRIEST,
             type=CharacterType.PERSISTENT,
             last_chat_at=None,
             created_at=datetime.now(timezone.utc),
@@ -67,13 +67,19 @@ class FakeCharacterRepository(CharacterRepository):  # domain 레포지토리 �
         )
 
     async def create(
-        self, user_id: ULID, name: str, persona: Persona, type: CharacterType
+        self,
+        user_id: ULID,
+        name: str,
+        persona: Persona,
+        appearance: Appearance,
+        type: CharacterType,
     ) -> Character:
         return Character(
             id=ULID(),
             user_id=user_id,
             name=name,
             persona=persona,
+            appearance=appearance,
             type=type,
             last_chat_at=None,
             created_at=datetime.now(timezone.utc),

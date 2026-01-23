@@ -1,8 +1,8 @@
 from app.character.adapter.outbound.entity import CharacterDocument
 from app.character.domain.entity import Character
 from app.character.domain.enum import (
+    Appearance,
     CharacterType,
-    Gender,
     Purpose,
     Style,
     Tone,
@@ -21,11 +21,11 @@ class CharacterMapper:
             user_id=doc.user_id,
             name=doc.name,
             persona=Persona(
-                gender=Gender(doc.persona["gender"]),
                 tone=Tone(doc.persona["tone"]),
                 style=Style(doc.persona["style"]),
                 purpose=Purpose(doc.persona["purpose"]),
             ),
+            appearance=Appearance(doc.appearance),
             type=CharacterType(doc.type),
             last_chat_at=doc.last_chat_at,
             created_at=doc.created_at,
@@ -43,11 +43,11 @@ class CharacterMapper:
             name=character.name,
             type=character.type,
             persona={
-                "gender": character.persona.gender.value,
                 "tone": character.persona.tone.value,
                 "style": character.persona.style.value,
                 "purpose": character.persona.purpose.value,
             },
+            appearance=character.appearance,
             created_at=character.created_at,
             updated_at=character.updated_at,
             last_chat_at=character.last_chat_at,

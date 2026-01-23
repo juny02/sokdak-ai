@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 from app.character.domain.entity import Character
-from app.character.domain.enum import CharacterType
+from app.character.domain.enum import Appearance, CharacterType
 
 from .persona_response import PersonaResponse
 
@@ -11,6 +11,7 @@ class BaseCharacterResponse(BaseModel):
     user_id: str
     name: str
     persona: PersonaResponse
+    appearance: Appearance
     type: CharacterType
     last_chat_at: str | None = None
     created_at: str
@@ -23,6 +24,7 @@ class BaseCharacterResponse(BaseModel):
             user_id=str(character.user_id),
             name=character.name,
             persona=PersonaResponse.from_domain(character.persona),
+            appearance=character.appearance,
             type=character.type,
             last_chat_at=(
                 character.last_chat_at.isoformat() if character.last_chat_at else None

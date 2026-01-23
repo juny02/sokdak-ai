@@ -12,5 +12,9 @@ class CreateCharacterUseCase:
 
     async def __call__(self, cmd: CreateCharacterCommand) -> Character:
         return await self.character_repo.create(
-            user_id=cmd.user_id, name=cmd.name, persona=cmd.persona, type=cmd.type
+            user_id=cmd.user_id,
+            name=cmd.name,
+            persona=cmd.persona,
+            appearance=cmd.appearance,
+            type=cmd.type,
         )

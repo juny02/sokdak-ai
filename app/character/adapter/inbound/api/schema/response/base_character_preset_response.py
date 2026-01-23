@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+from app.character.domain.enum import Appearance
 from app.character.domain.valueobject.character_preset import CharacterPreset
 
 from ..response.persona_response import PersonaResponse
@@ -10,6 +11,7 @@ class BaseCharacterPresetResponse(BaseModel):
     name: str
     description: str
     persona: PersonaResponse
+    appearance: Appearance
 
     @classmethod
     def from_domain(cls, preset: CharacterPreset) -> "BaseCharacterPresetResponse":
@@ -18,4 +20,5 @@ class BaseCharacterPresetResponse(BaseModel):
             name=preset.name,
             description=preset.description,
             persona=PersonaResponse.from_domain(preset.persona),
+            appearance=preset.appearance,
         )

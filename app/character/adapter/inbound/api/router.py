@@ -6,6 +6,7 @@ from app.character.adapter.inbound.api.schema.request import (
     PostCharacterRequest,
 )
 from app.character.adapter.inbound.api.schema.response import (
+    GetAppearancesResponse,
     GetCharacterPresetsResponse,
     GetCharacterResponse,
     GetCharactersResponse,
@@ -28,7 +29,7 @@ from app.character.application.usecase import (
     GetPersonasUseCase,
     UpdateCharacterUseCase,
 )
-from app.character.domain.enum import CharacterType
+from app.character.domain.enum import Appearance, CharacterType
 
 from .dependencies import (
     get_create_character_usecase,
@@ -41,6 +42,12 @@ from .dependencies import (
 )
 
 router = APIRouter(prefix="/characters", tags=["Character"])
+
+
+# GET /characters/appearances - 캐릭터 외형 목록을 받습니다.
+@router.get("/appearances", response_model=GetAppearancesResponse)
+async def get_appearances():
+    return GetAppearancesResponse(items=[a.value for a in Appearance])
 
 
 # GET /characters/personas - 각 카테고리별 키워드들을 전부 받습니다.

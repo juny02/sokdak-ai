@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from ..enum.appearance import Appearance
 from ..valueobject.persona import Persona
 
 
@@ -9,3 +10,4 @@ class CharacterPreset:
     name: str
     description: str
     persona: Persona
+    appearance: Appearance
