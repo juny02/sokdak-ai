@@ -12,7 +12,7 @@ class UpdateCharacterUseCase:
 
     흐름:
         1) 캐릭터 조회
-        2) 이름|페르소나 변경
+        2) 이름|페르소나|외형 변경
         3) 저장
     """
 
@@ -37,6 +37,9 @@ class UpdateCharacterUseCase:
 
         if cmd.persona is not None:
             character.update_persona(cmd.persona)
+
+        if cmd.appearance is not None:
+            character.update_appearance(cmd.appearance)
 
         # 3) 변경된 캐릭터의 최종 상태를 저장소에 반영
         await self.character_repo.update(character)

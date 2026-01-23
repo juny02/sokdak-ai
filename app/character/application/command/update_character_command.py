@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+from app.character.domain.enum import Appearance
 from app.character.domain.valueobject import Persona
 
 
@@ -10,3 +11,4 @@ class UpdateCharacterCommand(BaseModel):
 
     name: str | None = None
     persona: Persona | None = None
+    appearance: Appearance | None = None
