@@ -4,7 +4,7 @@ from ulid import ULID
 
 from app.character.application.command import OrderBy
 from app.character.domain.entity import Character
-from app.character.domain.enum import CharacterType
+from app.character.domain.enum import Appearance, CharacterType
 from app.character.domain.valueobject import Persona
 
 
@@ -24,7 +24,12 @@ class CharacterRepository(ABC):
 
     @abstractmethod
     async def create(
-        self, user_id: ULID, name: str, persona: Persona, type: CharacterType
+        self,
+        user_id: ULID,
+        name: str,
+        persona: Persona,
+        appearance: Appearance,
+        type: CharacterType,
     ) -> Character:
         raise NotImplementedError
 
