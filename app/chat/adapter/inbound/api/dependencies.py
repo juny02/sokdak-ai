@@ -18,7 +18,7 @@ from app.chat.application.usecase import (
 )
 from app.chat.domain.enum import ConversationType
 from app.chat.domain.repository import ConversationRepository, MessageRepository
-from core.ai.client import FakeClient, LLMClient, OpenAIClient
+from core.ai.client import FakeClient, LangChainClient, LLMClient
 from core.ai.service import LLMService, OpenAIService
 from core.infra.redis.client import get_redis_client
 
@@ -78,7 +78,7 @@ async def get_message_repo(
 
 
 def get_llm_client():
-    return OpenAIClient()
+    return LangChainClient()
 
 
 def get_llm_client_fake():
