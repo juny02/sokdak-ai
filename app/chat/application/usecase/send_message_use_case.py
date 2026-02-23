@@ -1,8 +1,11 @@
+import asyncio
+
 from app.character.application.error import CharacterNotFoundError
 from app.character.domain.repository import CharacterRepository
 from app.chat.application.command import SendMessageCommand
 from app.chat.application.error import ConversationNotFoundError
 from app.chat.domain.entity import Message
+from app.chat.domain.entity.conversation import Conversation
 from app.chat.domain.enum import Role
 from app.chat.domain.repository import ConversationRepository, MessageRepository
 from core.ai.service import LLMService
@@ -11,7 +14,7 @@ from core.ai.service import LLMService
 class SendMessageUseCase:
     """
     유저 메시지를 저장하고, 대화 맥락을 기반으로 AI 응답을 생성한 뒤
-    대화의 마지막 메시지 및 요약을 업데이트합니다.
+    대화의 마지막 메시지 및 요약을 백그라운드에서 업데이트합니다.
     AI 응답을 반환합니다.
 
     흐름:
@@ -19,9 +22,9 @@ class SendMessageUseCase:
         2) 최근 메시지 조회
         3) 대화 요약 조회
         4) 캐릭터 페르소나 조회
-        5) 위 정보를 기반으로 프롬프트 생성 → AI 응답 생성
-        6) AI 메시지 저장
-        7) Conversation 요약 및 마지막 메시지 업데이트
+        5) AI 응답 생성
+        6) AI 메시지 저장 → 즉시 응답 반환
+        7) [백그라운드] 대화 요약 생성 + Conversation 업데이트
     """
 
     def __init__(
@@ -39,6 +42,7 @@ class SendMessageUseCase:
     async def __call__(self, cmd: SendMessageCommand) -> Message:
         """
         메시지를 전송하고 AI 응답을 반환합니다.
+        요약 업데이트는 백그라운드에서 처리됩니다.
         """
         # 1) 유저 메시지 저장
         await self.message_repo.create(
@@ -80,7 +84,23 @@ class SendMessageUseCase:
             role=Role.AI,
         )
 
-        # 6) Conversation 업데이트 (요약 + 마지막 메시지)
+        # 6) 요약 생성 + Conversation 업데이트 → 백그라운드 처리 (응답 지연 없음)
+        asyncio.create_task(
+            self._update_summary(
+                conversation=conversation,
+                messages=messages,
+                saved_ai_message=saved_ai_message,
+            )
+        )
+
+        return saved_ai_message
+
+    async def _update_summary(
+        self,
+        conversation: Conversation,
+        messages: list[Message],
+        saved_ai_message: Message,
+    ) -> None:
         summary_response = await self.llm_service.summarize(
             previous_summary=conversation.summary,
             # TODO: 추후 설정값으로 변경
@@ -89,5 +109,3 @@ class SendMessageUseCase:
         conversation.update_last_message(saved_ai_message.content)
         conversation.update_summary(summary_response)
         await self.conversation_repo.update(conversation)
-
-        return saved_ai_message
