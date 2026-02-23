@@ -19,12 +19,11 @@ class SendMessageUseCase:
 
     흐름:
         1) 유저 메시지 저장
-        2) 최근 메시지 조회
-        3) 대화 요약 조회
-        4) 캐릭터 페르소나 조회
-        5) AI 응답 생성
-        6) AI 메시지 저장 → 즉시 응답 반환
-        7) [백그라운드] 대화 요약 생성 + Conversation 업데이트
+        2) 최근 메시지 + 대화 병렬 조회 (asyncio.gather)
+        3) 캐릭터 페르소나 조회
+        4) AI 응답 생성
+        5) AI 메시지 저장 → 즉시 응답 반환
+        6) [백그라운드] 대화 요약 생성 + Conversation 업데이트
     """
 
     def __init__(
@@ -51,24 +50,25 @@ class SendMessageUseCase:
             role=Role.USER,
         )
 
-        # 2) 최근 메시지 조회
-        messages = await self.message_repo.get(
-            conversation_id=cmd.conversation_id,
-            limit=10,  # TODO: 추후 설정값으로 변경
-            before=None,
+        # 2) 최근 메시지 + 대화 병렬 조회
+        messages, conversation = await asyncio.gather(
+            self.message_repo.get(
+                conversation_id=cmd.conversation_id,
+                limit=10,  # TODO: 추후 설정값으로 변경
+                before=None,
+            ),
+            self.conversation_repo.get_by_id(id=cmd.conversation_id),
         )
 
-        # 3) 대화 조회
-        conversation = await self.conversation_repo.get_by_id(id=cmd.conversation_id)
         if not conversation:
             raise ConversationNotFoundError()
 
-        # 4) 캐릭터 페르소나 조회
+        # 3) 캐릭터 페르소나 조회
         character = await self.character_repo.get_by_id(id=conversation.character_id)
         if not character:
             raise CharacterNotFoundError()
 
-        # 5) AI 응답 생성
+        # 4) AI 응답 생성
         chat_response = await self.llm_service.chat(
             persona=character.persona,
             summary=conversation.summary,
@@ -77,14 +77,14 @@ class SendMessageUseCase:
             language=conversation.language,
         )
 
-        # 6) AI 메시지 저장
+        # 5) AI 메시지 저장
         saved_ai_message = await self.message_repo.create(
             conversation_id=cmd.conversation_id,
             content=chat_response,
             role=Role.AI,
         )
 
-        # 6) 요약 생성 + Conversation 업데이트 → 백그라운드 처리 (응답 지연 없음)
+        # 6) [백그라운드] 요약 생성 + Conversation 업데이트
         asyncio.create_task(
             self._update_summary(
                 conversation=conversation,
